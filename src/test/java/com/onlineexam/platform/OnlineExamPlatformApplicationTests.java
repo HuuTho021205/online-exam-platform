@@ -1,4 +1,4 @@
-package com.onlineexam.platform.project;
+package com.onlineexam.platform;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
