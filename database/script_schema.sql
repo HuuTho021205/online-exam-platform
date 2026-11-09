@@ -18,7 +18,7 @@ DROP TABLE IF EXISTS subject;
 DROP TABLE IF EXISTS major;
 
 CREATE TABLE major (
-                       major_id    INT          NOT NULL AUTO_INCREMENT,
+                       major_id    BIGINT          NOT NULL AUTO_INCREMENT,
                        major_name  VARCHAR(100) NOT NULL,
                        created_at  DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
                        CONSTRAINT pk_major PRIMARY KEY (major_id),
@@ -26,7 +26,7 @@ CREATE TABLE major (
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
 
 CREATE TABLE subject (
-                         subject_id    INT          NOT NULL AUTO_INCREMENT,
+                         subject_id    BIGINT          NOT NULL AUTO_INCREMENT,
                          subject_name  VARCHAR(100) NOT NULL,
                          created_at    DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
                          CONSTRAINT pk_subject PRIMARY KEY (subject_id),
@@ -34,8 +34,8 @@ CREATE TABLE subject (
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
 
 CREATE TABLE major_subject (
-                               major_id    INT NOT NULL,
-                               subject_id  INT NOT NULL,
+                               major_id    BIGINT NOT NULL,
+                               subject_id  BIGINT NOT NULL,
                                CONSTRAINT pk_major_subject PRIMARY KEY (major_id, subject_id),
                                CONSTRAINT fk_major_subject_major
                                    FOREIGN KEY (major_id)   REFERENCES major (major_id)     ON DELETE CASCADE,
@@ -44,8 +44,8 @@ CREATE TABLE major_subject (
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
 
 CREATE TABLE classroom (
-                           classroom_id  INT         NOT NULL AUTO_INCREMENT,
-                           major_id      INT         NOT NULL,
+                           classroom_id  BIGINT         NOT NULL AUTO_INCREMENT,
+                           major_id      BIGINT         NOT NULL,
                            class_name    VARCHAR(50) NOT NULL,
                            created_at    DATETIME    NOT NULL DEFAULT CURRENT_TIMESTAMP,
                            CONSTRAINT pk_classroom PRIMARY KEY (classroom_id),
@@ -55,8 +55,8 @@ CREATE TABLE classroom (
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
 
 CREATE TABLE users (
-                       user_id       INT          NOT NULL AUTO_INCREMENT,
-                       classroom_id  INT          NULL,
+                       user_id       BIGINT          NOT NULL AUTO_INCREMENT,
+                       classroom_id  BIGINT          NULL,
                        full_name     VARCHAR(100) NOT NULL,
                        username      VARCHAR(50)  NOT NULL,
                        email         VARCHAR(100) NOT NULL,
@@ -72,8 +72,8 @@ CREATE TABLE users (
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
 
 CREATE TABLE question (
-                          question_id  INT      NOT NULL AUTO_INCREMENT,
-                          subject_id   INT      NOT NULL,
+                          question_id  BIGINT      NOT NULL AUTO_INCREMENT,
+                          subject_id   BIGINT      NOT NULL,
                           content      TEXT     NOT NULL,
                           created_at   DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
                           CONSTRAINT pk_question PRIMARY KEY (question_id),
@@ -82,8 +82,8 @@ CREATE TABLE question (
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
 
 CREATE TABLE choice (
-                        choice_id    INT          NOT NULL AUTO_INCREMENT,
-                        question_id  INT          NOT NULL,
+                        choice_id    BIGINT          NOT NULL AUTO_INCREMENT,
+                        question_id  BIGINT          NOT NULL,
                         content      VARCHAR(500) NOT NULL,
                         is_correct   BOOLEAN      NOT NULL DEFAULT FALSE,
                         created_at   DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -93,14 +93,14 @@ CREATE TABLE choice (
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
 
 CREATE TABLE exam (
-                      exam_id           INT          NOT NULL AUTO_INCREMENT,
-                      subject_id        INT          NOT NULL,
+                      exam_id           BIGINT          NOT NULL AUTO_INCREMENT,
+                      subject_id        BIGINT          NOT NULL,
                       exam_name         VARCHAR(150) NOT NULL,
                       start_time        DATETIME     NOT NULL,
                       end_time          DATETIME     NOT NULL,
                       duration_minutes  INT          NOT NULL,
                       created_at        DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
-                      created_by        INT          NOT NULL,
+                      created_by        BIGINT          NOT NULL,
                       CONSTRAINT pk_exam PRIMARY KEY (exam_id),
                       CONSTRAINT fk_exam_subject
                           FOREIGN KEY (subject_id) REFERENCES subject (subject_id) ON DELETE RESTRICT,
@@ -111,8 +111,8 @@ CREATE TABLE exam (
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
 
 CREATE TABLE exam_classroom (
-                                classroom_id  INT NOT NULL,
-                                exam_id       INT NOT NULL,
+                                classroom_id  BIGINT NOT NULL,
+                                exam_id       BIGINT NOT NULL,
                                 CONSTRAINT pk_exam_classroom PRIMARY KEY (classroom_id, exam_id),
                                 CONSTRAINT fk_exam_classroom_classroom
                                     FOREIGN KEY (classroom_id) REFERENCES classroom (classroom_id) ON DELETE CASCADE,
@@ -121,9 +121,9 @@ CREATE TABLE exam_classroom (
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
 
 CREATE TABLE exam_question (
-                               exam_question_id  INT NOT NULL AUTO_INCREMENT,
-                               exam_id           INT NOT NULL,
-                               question_id       INT NOT NULL,
+                               exam_question_id  BIGINT NOT NULL AUTO_INCREMENT,
+                               exam_id           BIGINT NOT NULL,
+                               question_id       BIGINT NOT NULL,
                                question_order    INT NOT NULL,
                                CONSTRAINT pk_exam_question PRIMARY KEY (exam_question_id),
                                CONSTRAINT uq_exam_question_order    UNIQUE (exam_id, question_order),
@@ -136,9 +136,9 @@ CREATE TABLE exam_question (
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
 
 CREATE TABLE exam_attempt (
-                              exam_attempt_id  INT          NOT NULL AUTO_INCREMENT,
-                              user_id          INT          NOT NULL,
-                              exam_id          INT          NOT NULL,
+                              exam_attempt_id  BIGINT          NOT NULL AUTO_INCREMENT,
+                              user_id          BIGINT          NOT NULL,
+                              exam_id          BIGINT          NOT NULL,
                               started_at       DATETIME     NOT NULL,
                               deadline_at      DATETIME     NOT NULL,
                               submitted_at     DATETIME     NULL,
@@ -159,10 +159,10 @@ CREATE TABLE exam_attempt (
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
 
 CREATE TABLE attempt_answer (
-                                attempt_answer_id  INT      NOT NULL AUTO_INCREMENT,
-                                exam_attempt_id    INT      NOT NULL,
-                                question_id        INT      NOT NULL,
-                                choice_id          INT      NULL,
+                                attempt_answer_id  BIGINT      NOT NULL AUTO_INCREMENT,
+                                exam_attempt_id    BIGINT      NOT NULL,
+                                question_id        BIGINT      NOT NULL,
+                                choice_id          BIGINT      NULL,
                                 created_at         DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
                                 CONSTRAINT pk_attempt_answer PRIMARY KEY (attempt_answer_id),
                                 CONSTRAINT uq_attempt_answer_attempt_question UNIQUE (exam_attempt_id, question_id),
