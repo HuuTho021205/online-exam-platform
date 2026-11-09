@@ -30,7 +30,7 @@ public class Choice {
 
     @NotNull
     @Column(insertable = false, updatable = false)
-    private LocalDateTime createAt;
+    private LocalDateTime createdAt;
 
     @ManyToOne
     @JoinColumn(name = "question_id")

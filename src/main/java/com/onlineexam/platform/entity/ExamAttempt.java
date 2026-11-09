@@ -21,7 +21,7 @@ public class ExamAttempt {
     private Long ExamAttemptId;
 
     @NotNull
-    private LocalDateTime statedAt;
+    private LocalDateTime startedAt;
 
     @NotNull
     private LocalDateTime deadlineAt;

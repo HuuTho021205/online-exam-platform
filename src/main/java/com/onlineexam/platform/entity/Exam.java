@@ -40,9 +40,6 @@ public class Exam {
     @Column(insertable = false, updatable = false)
     private LocalDateTime createdAt;
 
-    @NotNull
-    private Integer createdBy;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "subject_id")
     private Subject subject;
