@@ -14,8 +14,8 @@ import java.util.List;
 public class SubjectController {
     private final SubjectService subjectService;
 
-    @GetMapping("/subject")
-    public String getAllSubject(Model model){
+    @GetMapping("/subjects")
+    public String getAllSubjects(Model model){
         List<Subject> subjects = subjectService.getAllSubjects();
         model.addAttribute("subjects",subjects);
         return "subject/list";
