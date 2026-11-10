@@ -21,11 +21,11 @@ import java.util.List;
 public class Exam {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long ExamId;
+    private Long examId;
 
     @NotBlank
     @Size(max = 150)
-    private String ExamName;
+    private String examName;
 
     @NotNull
     private LocalDateTime startTime;

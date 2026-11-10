@@ -25,7 +25,6 @@ public class Choice {
     @Size(max = 500)
     private String content;
 
-    @NotNull
     private boolean isCorrect = false;
 
     @Column(insertable = false, updatable = false)

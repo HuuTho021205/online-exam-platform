@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 public class AttemptAnswer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long AttemptAnswerId;
+    private Long attemptAnswerId;
 
     @Column(insertable = false, updatable = false)
     private LocalDateTime createdAt;

@@ -15,7 +15,7 @@ import lombok.Setter;
 public class ExamQuestion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long ExamQuestionId;
+    private Long examQuestionId;
 
     @NotNull
     private Integer questionOrder;

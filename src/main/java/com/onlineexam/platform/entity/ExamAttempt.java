@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 public class ExamAttempt {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long ExamAttemptId;
+    private Long examAttemptId;
 
     @NotNull
     private LocalDateTime startedAt;
