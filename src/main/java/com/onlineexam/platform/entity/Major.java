@@ -28,7 +28,6 @@ public class Major {
     @Column(unique = true)
     private String majorName;
 
-    @NotNull
     @Column(insertable = false, updatable = false)
     private LocalDateTime createdAt;
 

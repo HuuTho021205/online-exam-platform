@@ -19,7 +19,6 @@ public class AttemptAnswer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long AttemptAnswerId;
 
-    @NotNull
     @Column(insertable = false, updatable = false)
     private LocalDateTime createdAt;
 

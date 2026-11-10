@@ -28,7 +28,6 @@ public class Subject {
     @Column(unique = true)
     private String subjectName;
 
-    @NotNull
     @Column(insertable = false, updatable = false)
     private LocalDateTime createdAt;
 

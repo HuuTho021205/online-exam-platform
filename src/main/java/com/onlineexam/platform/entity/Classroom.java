@@ -27,7 +27,6 @@ public class Classroom {
     @Column(unique = true)
     private String className;
 
-    @NotNull
     @Column(insertable = false, updatable = false)
     private LocalDateTime createdAt;
 

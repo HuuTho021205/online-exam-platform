@@ -22,7 +22,6 @@ public class Question {
     @NotBlank
     private String content;
 
-    @NotNull
     @Column(insertable = false, updatable = false)
     private LocalDateTime createdAt;
 

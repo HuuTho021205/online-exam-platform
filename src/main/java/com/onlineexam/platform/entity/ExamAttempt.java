@@ -26,15 +26,13 @@ public class ExamAttempt {
     @NotNull
     private LocalDateTime deadlineAt;
 
-    @NotNull
     private LocalDateTime submittedAt;
 
     @NotNull
     @Enumerated(EnumType.STRING)
     private ExamAttemptStatus status = ExamAttemptStatus.IN_PROGRESS;
 
-    @NotNull
-    private BigDecimal score = BigDecimal.ZERO;
+    private BigDecimal score;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "exam_id")

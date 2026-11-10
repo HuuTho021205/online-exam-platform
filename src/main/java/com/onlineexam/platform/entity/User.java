@@ -49,7 +49,6 @@ public class User {
     @NotNull
     private Boolean isActive = true;
 
-    @NotNull
     @Column(insertable = false, updatable = false)
     private LocalDateTime createdAt;
 

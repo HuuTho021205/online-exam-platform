@@ -36,7 +36,6 @@ public class Exam {
     @NotNull
     private Integer durationMinutes;
 
-    @NotNull
     @Column(insertable = false, updatable = false)
     private LocalDateTime createdAt;
 
