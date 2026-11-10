@@ -1,7 +1,19 @@
-<nav th:fragment="navbar">
-    <a th:href="@{/}" class="navbar-brand">Online-Exam</a>
-    <ul>
-        <li><a th:href="@{/}">Trang chủ</a></li>
-        <li><a th:href="@{/subjects}">Môn học</a></li>
-    </ul>
+<nav th:fragment="navbar" class="navbar navbar-expand-lg bg-body-tertiary " data-bs-theme="dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" th:href="@{/}"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Online-Exam</font></font></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Chuyển đổi điều hướng">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" th:href="@{/}"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Trang chủ</font></font></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/subjects}"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Danh sách môn học</font></font></a>
+                </li>
+
+            </ul>
+        </div>
+    </div>
 </nav>

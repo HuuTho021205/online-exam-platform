@@ -1,3 +1,25 @@
-<footer th:fragment="footer">
-    <p>Bản quyền thuộc về HuuTho</p>
+<footer th:fragment="footer" class="mt-auto py-3 border-top bg-light">
+
+    <div class="container d-flex flex-wrap justify-content-between align-items-center">
+
+        <div class="col-md-4 d-flex align-items-center">
+            <span class="text-body-secondary">
+                © <span th:text="${#temporals.format(#temporals.createNow(), 'yyyy')}">2026</span> Online Exam Platform. All rights reserved.
+            </span>
+        </div>
+
+        <ul class="nav col-md-4 justify-content-end list-unstyled d-flex mb-0">
+            <li class="ms-3">
+                <a class="text-body-secondary" href="#" aria-label="Facebook">
+                    <i class="bi bi-facebook fs-5"></i>
+                </a>
+            </li>
+            <li class="ms-3">
+                <a class="text-body-secondary" href="#" aria-label="GitHub">
+                    <i class="bi bi-github fs-5"></i>
+                </a>
+            </li>
+        </ul>
+
+    </div>
 </footer>
