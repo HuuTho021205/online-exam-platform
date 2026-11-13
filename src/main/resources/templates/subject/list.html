@@ -2,28 +2,30 @@
 <html lang="vi" xmlns:th="http://www.thymeleaf.org"
       th:replace="~{fragments/layout :: layout(title = 'Danh sách môn học', content =~{:: #subject-list} )}">
 <div id="subject-list">
-    <h2 class="mb-4 text-center">DANH SÁCH MÔN HỌC</h2>
+    <h2 class="mb-4 text-center">Danh sách môn học</h2>
 
-    <table class="table table-bordered table-striped table-hover">
-        <thead class="table-dark">
-        <tr>
-            <th scope="col" class="text-center">STT</th>
-            <th scope="col" class="text-center">Mã Môn Học (ID)</th>
-            <th scope="col">Tên Môn Học</th>
-        </tr>
-        </thead>
-        <tbody>
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped table-hover">
+            <thead class="table-dark">
+            <tr>
+                <th scope="col" class="text-center">STT</th>
+                <th scope="col" class="text-center">Mã Môn Học </th>
+                <th scope="col">Tên Môn Học</th>
+            </tr>
+            </thead>
+            <tbody>
 
-        <tr th:each="subject, iterStat : ${subjects}">
-            <td class="text-center" th:text="${iterStat.count}"></td>
-            <td class="text-center" th:text="${subject.subjectId}"></td>
-            <td th:text="${subject.subjectName}"></td>
-        </tr>
+            <tr th:each="subject, iterStat : ${subjects}">
+                <td class="text-center" th:text="${iterStat.count}"></td>
+                <td class="text-center" th:text="${subject.subjectId}"></td>
+                <td th:text="${subject.subjectName}"></td>
+            </tr>
 
-        <tr th:if="${#lists.isEmpty(subjects)}">
-            <td colspan="3" class="text-center text-muted">Chưa có môn học nào trong hệ thống.</td>
-        </tr>
-        </tbody>
-    </table>
+            <tr th:if="${#lists.isEmpty(subjects)}">
+                <td colspan="3" class="text-center text-muted">Chưa có môn học nào trong hệ thống.</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 </html>
