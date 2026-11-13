@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="vi" xmlns:th ="http://www.thymeleaf.org"
+        th:replace="~{fragments/layout:: layout(title= '403 Forbidden', content=~{:: #page-403} )}">
+<body>
+    <div id="page-403">
+        <section class="p-5 mb-5 bg-white rounded-3 shadow-sm text-center">
+            <div class="py-3">
+                <p class="col-md-8 mx-auto fs-5 text-muted mb-4"
+                th:text="${message ?: 'Bạn không có quyền truy cập trang này.'}">
+                    Bạn không có quyền truy cập trang này.
+                </p>
+                <a th:href="@{/}" class="btn btn-primary btn-lg px-4">
+                    Quay lại trang chủ <i class="bi bi-arrow-right ms-1"></i>
+                </a>
+            </div>
+        </section>
+    </div>
+
+</body>
+</html>
