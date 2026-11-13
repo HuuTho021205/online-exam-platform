@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout(title='Đăng nhập', content=~{:: #login})}">
+
+<body>
+<div id="login" class="col-md-5 mx-auto">
+
+    <h1 class="h3 mb-3 fw-normal">Đăng nhập</h1>
+    <div th:if="${param.error}" class="alert alert-danger py-2" role="alert">
+        Sai tên đăng nhập hoặc mật khẩu
+    </div>
+
+    <!-- 2. Thông báo khi vừa đăng xuất (URL có ?logout) -->
+    <div th:if="${param.logout}" class="alert alert-success py-2" role="alert">
+        Đã đăng xuất
+    </div>
+
+    <form th:action="@{/login}" method="post">
+        <div class="form-floating">
+            <input type="text" class="form-control" id="floatingInput" placeholder="Tên đăng nhập" name="username">
+            <label for="floatingInput">Tên đăng nhập</label>
+        </div>
+        <div class="form-floating">
+            <input type="password" class="form-control" id="floatingPassword" placeholder="Password" name="password">
+            <label for="floatingPassword">Password</label>
+        </div>
+        <button class="btn btn-primary w-100 py-2" type="submit">Đăng nhập</button>
+    </form>
+</div>
+</body>
+</html>
