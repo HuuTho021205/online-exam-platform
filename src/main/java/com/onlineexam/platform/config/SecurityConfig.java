@@ -19,8 +19,8 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http){
-        http.csrf(AbstractHttpConfigurer::disable)
+    public SecurityFilterChain filterChain(HttpSecurity http) {
+        http
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers("/").permitAll()
                                 .requestMatchers("/login").permitAll()
@@ -39,24 +39,25 @@ public class SecurityConfig {
                         .permitAll());
         return http.build();
     }
+
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
     @Bean
-    public UserDetailsService userDetailsService(PasswordEncoder passwordEncoder){
+    public UserDetailsService userDetailsService(PasswordEncoder passwordEncoder) {
         UserDetails admin = User.builder()
                 .username("admin")
                 .password(passwordEncoder.encode("admin"))
                 .roles(UserRole.ADMIN.name())
                 .build();
-        UserDetails lecturer =User.builder()
+        UserDetails lecturer = User.builder()
                 .username("lecturer")
                 .password(passwordEncoder.encode("lecturer"))
                 .roles(UserRole.LECTURER.name())
                 .build();
-        UserDetails student =User.builder()
+        UserDetails student = User.builder()
                 .username("student")
                 .password(passwordEncoder.encode("student"))
                 .roles(UserRole.STUDENT.name())

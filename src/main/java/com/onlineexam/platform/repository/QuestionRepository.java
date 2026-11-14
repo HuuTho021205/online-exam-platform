@@ -8,6 +8,6 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface QuestionRepository extends JpaRepository<Question, Long> {
-    @Query(value = "select q.content from question as q where q.subject_id = :subjectId order by rand() limit : quantity", nativeQuery = true)
+    @Query(value = "select * from question as q where q.subject_id = :subjectId order by rand() limit :quantity", nativeQuery = true)
     List<Question> randomQuestion(@Param("quantity")int quantity, @Param("subjectId") Long subjectId);
 }
