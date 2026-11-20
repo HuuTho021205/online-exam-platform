@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout(title=${pageTitle}, content=~{:: #major-form})}">
+<head>
+    <title th:text="${pageTitle}">Ngành học</title>
+</head>
+<body>
+<main id="major-form" class="container py-4" style="max-width: 720px;">
+    <!-- Tiêu đề trang động tiếng Việt -->
+    <div class="mb-3">
+        <h2 th:text="${pageTitle}">Thêm ngành học</h2>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <!-- Biểu mẫu dùng th:action để Spring Security tự động chèn token CSRF -->
+            <form th:action="@{${formAction}}" th:object="${majorRequest}" method="post" novalidate>
+
+                <!-- Ô nhập tên ngành -->
+                <div class="mb-3">
+                    <label for="majorName" class="form-label fw-semibold">
+                        Tên ngành <span class="text-danger">*</span>
+                    </label>
+                    <input type="text"
+                           id="majorName"
+                           th:field="*{majorName}"
+                           class="form-control"
+                           th:classappend="${#fields.hasErrors('majorName')} ? 'is-invalid'"
+                           placeholder="Nhập tên ngành học (ví dụ: Kỹ thuật phần mềm)">
+                    <!-- Hiển thị thông báo lỗi ngay tại ô tên ngành -->
+                    <div class="invalid-feedback"
+                         th:if="${#fields.hasErrors('majorName')}"
+                         th:errors="*{majorName}">
+                        Lỗi tên ngành
+                    </div>
+                </div>
+
+                <!-- Danh sách môn học dạng checkbox nhiều lựa chọn -->
+                <div class="mb-4">
+                    <label class="form-label fw-semibold d-block">
+                        Danh sách môn học thuộc ngành
+                    </label>
+
+                    <div th:if="${#lists.isEmpty(subjects)}" class="text-muted fst-italic">
+                        Hiện chưa có môn học nào trong hệ thống.
+                    </div>
+
+                    <div th:unless="${#lists.isEmpty(subjects)}"
+                         class="border rounded p-3 bg-light"
+                         style="max-height: 280px; overflow-y: auto;">
+                        <div class="form-check mb-2" th:each="subject : ${subjects}">
+                            <input class="form-check-input"
+                                   type="checkbox"
+                                   th:id="'subject_' + ${subject.subjectId}"
+                                   th:field="*{subjectIds}"
+                                   th:value="${subject.subjectId}">
+                            <label class="form-check-label"
+                                   th:for="'subject_' + ${subject.subjectId}"
+                                   th:text="${subject.subjectName}">
+                                Tên môn học
+                            </label>
+                        </div>
+                    </div>
+                    <!-- Hiển thị lỗi của trường subjectIds nếu có -->
+                    <div class="text-danger small mt-1"
+                         th:if="${#fields.hasErrors('subjectIds')}"
+                         th:errors="*{subjectIds}">
+                    </div>
+                </div>
+
+                <!-- Nút Lưu và Quay lại -->
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-primary">
+                        Lưu
+                    </button>
+                    <a th:href="@{/admin/majors}" class="btn btn-secondary">
+                        Quay lại
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th ="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout(title='Quản lý ngành học', content=~{:: #major-list})}">
+<head>
+    <title>Quản lý ngành học</title>
+</head>
+<body>
+<main id="major-list" class="container py-4">
+    <!-- Tiêu đề & Nút Thêm ngành -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="mb-0">Quản lý ngành học</h2>
+        <a th:href="@{/admin/majors/new}" class="btn btn-primary">
+            <i class="bi bi-plus-lg"></i> Thêm ngành
+        </a>
+    </div>
+
+    <!-- Bảng danh sách ngành bọc trong table-responsive -->
+    <div class="card shadow-sm">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                <tr>
+                    <th style="width: 70px;">STT</th>
+                    <th>Tên ngành</th>
+                    <th>Các môn học</th>
+                    <th class="text-center" style="width: 120px;">Số lớp</th>
+                    <th class="text-end" style="width: 180px;">Thao tác</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!-- Dòng báo khi chưa có ngành nào -->
+                <tr th:if="${#lists.isEmpty(majors)}">
+                    <td colspan="5" class="text-center text-muted py-4">
+                        Chưa có ngành học nào trong hệ thống.
+                    </td>
+                </tr>
+
+                <!-- Duyệt danh sách ngành -->
+                <tr th:each="major, iterStat : ${majors}">
+                    <td th:text="${iterStat.count}">1</td>
+                    <td class="fw-semibold" th:text="${major.majorName}">Công nghệ thông tin</td>
+                    <td>
+                        <span th:if="${#lists.isEmpty(major.subjectNames)}" class="text-muted fst-italic">
+                            Chưa gán môn
+                        </span>
+                        <span th:each="subName : ${major.subjectNames}"
+                              th:text="${subName}"
+                              class="badge bg-secondary me-1 mb-1">
+                            Toán cao cấp
+                        </span>
+                    </td>
+                    <td class="text-center">
+                        <span class="badge bg-info text-dark" th:text="${major.classroomCount}">0</span>
+                    </td>
+                    <td class="text-end">
+                        <!-- Nút Sửa -->
+                        <a th:href="@{/admin/majors/{id}/edit(id=${major.majorId})}"
+                           class="btn btn-sm btn-outline-warning me-1">
+                            Sửa
+                        </a>
+
+                        <!-- Biểu mẫu POST nhỏ để Xóa (tự động kèm CSRF token qua th:action) -->
+                        <form th:action="@{/admin/majors/{id}/delete(id=${major.majorId})}"
+                              method="post"
+                              class="d-inline"
+                              onsubmit="return confirm('Bạn có chắc chắn muốn xóa ngành này không?');">
+                            <button type="submit" class="btn btn-sm btn-outline-danger">
+                                Xóa
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+</body>
+</html>
