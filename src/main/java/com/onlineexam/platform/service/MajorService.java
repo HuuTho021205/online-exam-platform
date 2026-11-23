@@ -8,7 +8,7 @@ import java.util.List;
 public interface MajorService {
     List<MajorResponse> getAllMajors();
     MajorRequest getMajorById(Long majorId);
-    MajorResponse createMajor(MajorRequest majorRequest);
-    MajorResponse updateMajor(Long majorId, MajorRequest majorRequest);
+    void createMajor(MajorRequest majorRequest);
+    void updateMajor(Long majorId, MajorRequest majorRequest);
     void deleteMajor(Long majorId);
 }

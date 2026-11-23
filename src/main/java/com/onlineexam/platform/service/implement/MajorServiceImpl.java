@@ -19,7 +19,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class MajorImplService  implements MajorService {
+public class MajorServiceImpl implements MajorService {
     private final MajorRepository majorRepository;
     private final ClassroomRepository classroomRepository;
     private final SubjectRepository subjectRepository;
@@ -52,7 +52,7 @@ public class MajorImplService  implements MajorService {
 
     @Override
     @Transactional
-    public MajorResponse createMajor(MajorRequest majorRequest) {
+    public void createMajor(MajorRequest majorRequest) {
         String majorName = majorRequest.getMajorName().strip();
         if(majorRepository.existsByMajorNameIgnoreCase(majorName)){
             throw new BusinessRuleException("Major name already exists:" + majorName
@@ -62,16 +62,12 @@ public class MajorImplService  implements MajorService {
         major.setMajorName(majorName);
         List<Subject> subjects = resolveSubjects(majorRequest.getSubjectIds());
         major.setSubjects(subjects);
-        Major savedMajor = majorRepository.save(major);
-        List<String> subjectNames = subjects.stream()
-                .map(Subject::getSubjectName)
-                .toList();
-        return new MajorResponse(savedMajor.getMajorId(), majorName, subjectNames,0);
+        majorRepository.save(major);
     }
 
     @Override
     @Transactional
-    public MajorResponse updateMajor(Long majorId, MajorRequest majorRequest) {
+    public void updateMajor(Long majorId, MajorRequest majorRequest) {
         String majorName = majorRequest.getMajorName().strip();
         Major major = majorRepository.findById(majorId)
                 .orElseThrow(()-> new ResourceNotFoundException("Major","MajorId",majorId));
@@ -82,12 +78,7 @@ public class MajorImplService  implements MajorService {
         List<Subject> subjects = resolveSubjects(majorRequest.getSubjectIds());
         major.setMajorName(majorName);
         major.setSubjects(subjects);
-        Major savedMajor = majorRepository.save(major);
-        List<String> subjectNames = subjects.stream()
-                .map(Subject::getSubjectName)
-                .toList();
-        return new MajorResponse(savedMajor.getMajorId(), major.getMajorName(), subjectNames, classroomRepository.countByMajor_MajorId(savedMajor.getMajorId()));
-
+        majorRepository.save(major);
     }
 
     @Override

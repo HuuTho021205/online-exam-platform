@@ -34,15 +34,15 @@ public class AdminMajorController {
         return LIST_VIEW;
     }
 
-    @GetMapping("/new") // 1. Đã bổ sung annotation bị thiếu
+    @GetMapping("/new")
     public String showCreateForm(Model model) {
-        model.addAttribute("majorRequest", new MajorRequest()); // 2. Đổi majorForm -> majorRequest
+        model.addAttribute("majorRequest", new MajorRequest());
         prepareForm(model, "Thêm ngành học", "/admin/majors");
         return FORM_VIEW;
     }
 
     @PostMapping
-    public String create(@Valid @ModelAttribute("majorRequest") MajorRequest form, // 2. Đổi majorForm -> majorRequest
+    public String create(@Valid @ModelAttribute("majorRequest") MajorRequest form,
                          BindingResult bindingResult,
                          Model model,
                          RedirectAttributes redirectAttributes) {
@@ -62,7 +62,7 @@ public class AdminMajorController {
 
     @GetMapping("/{id}/edit")
     public String showEditForm(@PathVariable Long id, Model model) {
-        model.addAttribute("majorRequest", majorService.getMajorById(id)); // 2. Đổi majorForm -> majorRequest
+        model.addAttribute("majorRequest", majorService.getMajorById(id));
         prepareForm(model, "Sửa ngành học", "/admin/majors/" + id);
         return FORM_VIEW;
     }
@@ -102,6 +102,6 @@ public class AdminMajorController {
     private void prepareForm(Model model, String pageTitle, String formAction) {
         model.addAttribute("pageTitle", pageTitle);
         model.addAttribute("formAction", formAction);
-        model.addAttribute("subjects", subjectService.getAllSubjects()); // 3. Đổi allSubjects -> subjects
+        model.addAttribute("subjects", subjectService.getAllSubjects());
     }
 }
