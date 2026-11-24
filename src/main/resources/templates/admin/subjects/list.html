@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th ="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout(title='Quản lý môn học', content=~{:: #subject-list})}">
+<head>
+    <title>Quản lý môn học</title>
+</head>
+<body>
+<main id="subject-list" class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="mb-0">Quản lý môn học</h2>
+        <a th:href="@{/admin/subjects/new}" class="btn btn-primary">
+            <i class="bi bi-plus-lg"></i> Thêm môn học
+        </a>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                <tr>
+                    <th style="width: 70px;">STT</th>
+                    <th>Tên môn học</th>
+                    <th class="text-center">Số kì thi sử dụng</th>
+                    <th class="text-center">Số câu hỏi sử dụng</th>
+                    <th class="text-center">Số ngành sử dụng</th>
+                    <th class="text-end" style="width: 160px;">Thao tác</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:if="${#lists.isEmpty(subjects)}">
+                    <td colspan="6" class="text-center text-muted py-4">
+                        Chưa có môn học nào trong hệ thống.
+                    </td>
+                </tr>
+
+                <!-- Duyệt danh sách môn học -->
+                <tr th:each="subject, iterStat : ${subjects}">
+                    <td th:text="${iterStat.count}">1</td>
+                    <td class="fw-semibold" th:text="${subject.subjectName}">Công nghệ thông tin</td>
+                    <td class="text-center">
+                        <span class="badge bg-info text-dark" th:text="${subject.examCount}">0</span>
+                    </td>
+                    <td class="text-center">
+                        <span class="badge bg-info text-dark" th:text="${subject.questionCount}">0</span>
+                    </td>
+                    <td class="text-center">
+                        <span class="badge bg-info text-dark" th:text="${subject.majorCount}">0</span>
+                    </td>
+                    <td class="text-end">
+                        <!-- Nút Sửa -->
+                        <a th:href="@{/admin/subjects/{id}/edit(id=${subject.subjectId})}"
+                           class="btn btn-sm btn-outline-warning me-1">
+                            Sửa
+                        </a>
+
+                        <form th:action="@{/admin/subjects/{id}/delete(id=${subject.subjectId})}"
+                              method="post"
+                              class="d-inline"
+                              onsubmit="return confirm('Bạn có chắc chắn muốn xóa môn học này không?');">
+                            <button type="submit" class="btn btn-sm btn-outline-danger">
+                                Xóa
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+</body>
+</html>
