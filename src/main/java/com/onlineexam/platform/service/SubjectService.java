@@ -2,7 +2,6 @@ package com.onlineexam.platform.service;
 
 import com.onlineexam.platform.dto.SubjectRequest;
 import com.onlineexam.platform.dto.SubjectResponse;
-import com.onlineexam.platform.entity.Subject;
 
 import java.util.List;
 
