@@ -42,7 +42,7 @@ public class AdminMajorController {
     }
 
     @PostMapping
-    public String create(@Valid @ModelAttribute("majorRequest") MajorRequest form,
+    public String createMajor(@Valid @ModelAttribute("majorRequest") MajorRequest form,
                          BindingResult bindingResult,
                          Model model,
                          RedirectAttributes redirectAttributes) {

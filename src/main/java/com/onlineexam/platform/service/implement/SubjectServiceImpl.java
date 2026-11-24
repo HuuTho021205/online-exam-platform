@@ -2,7 +2,6 @@ package com.onlineexam.platform.service.implement;
 
 import com.onlineexam.platform.dto.SubjectRequest;
 import com.onlineexam.platform.dto.SubjectResponse;
-import com.onlineexam.platform.entity.Major;
 import com.onlineexam.platform.entity.Subject;
 import com.onlineexam.platform.exception.BusinessRuleException;
 import com.onlineexam.platform.exception.ResourceNotFoundException;
