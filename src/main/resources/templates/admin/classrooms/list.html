@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th ="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout(title='Quản lý lớp học', content=~{:: #classroom-list})}">
+<head>
+    <title>Quản lý lớp học</title>
+</head>
+<body>
+<main id="classroom-list" class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="mb-0">Quản lý lớp học</h2>
+        <a th:href="@{/admin/classrooms/new}" class="btn btn-primary">
+            <i class="bi bi-plus-lg"></i> Thêm lớp học
+        </a>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                <tr>
+                    <th style="width: 70px;">STT</th>
+                    <th>Tên lớp học</th>
+                    <th class="text-center">Tên ngành</th>
+                    <th class="text-center">Số sinh viên</th>
+                    <th class="text-end" style="width: 160px;">Thao tác</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:if="${#lists.isEmpty(classrooms)}">
+                    <td colspan="5" class="text-center text-muted py-4">
+                        Chưa có lớp học nào trong hệ thống.
+                    </td>
+                </tr>
+
+                <!-- Duyệt danh sách môn học -->
+                <tr th:each="classroom, iterStat : ${classrooms}">
+                    <td th:text="${iterStat.count}">1</td>
+                    <td class="fw-semibold" th:text="${classroom.className}">Công nghệ thông tin</td>
+                    <td class="text-center">
+                        <span class="badge bg-info text-dark" th:text="${classroom.majorName}">0</span>
+                    </td>
+                    <td class="text-center">
+                        <span class="badge bg-info text-dark" th:text="${classroom.studentCount}">0</span>
+                    </td>
+                    <td class="text-end">
+                        <!-- Nút Sửa -->
+                        <a th:href="@{/admin/classrooms/{id}/edit(id=${classroom.classId})}"
+                           class="btn btn-sm btn-outline-warning me-1">
+                            Sửa
+                        </a>
+
+                        <form th:action="@{/admin/classrooms/{id}/delete(id=${classroom.classId})}"
+                              method="post"
+                              class="d-inline"
+                              onsubmit="return confirm('Bạn có chắc chắn muốn xóa lớp học này không?');">
+                            <button type="submit" class="btn btn-sm btn-outline-danger">
+                                Xóa
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+</body>
+</html>

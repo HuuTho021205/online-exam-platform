@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout(title=${pageTitle}, content=~{:: #classroom-form})}">
+<head>
+    <title th:text="${pageTitle}">Lớp học</title>
+</head>
+<body>
+<main id="classroom-form" class="container py-4" style="max-width: 720px;">
+    <div class="mb-3">
+        <h2 th:text="${pageTitle}">Thêm lớp học</h2>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <form th:action="@{${formAction}}" th:object="${classroomRequest}" method="post" novalidate>
+
+                <div class="mb-3">
+                    <label for="className" class="form-label fw-semibold">
+                        Tên lớp học <span class="text-danger">*</span>
+                    </label>
+                    <input type="text"
+                           id="className"
+                           th:field="*{className}"
+                           class="form-control"
+                           th:classappend="${#fields.hasErrors('className')} ? 'is-invalid'"
+                           placeholder="Nhập tên lớp học (ví dụ: K47B)">
+                    <div class="invalid-feedback"
+                         th:if="${#fields.hasErrors('className')}"
+                         th:errors="*{className}">
+                        Lỗi tên lớp học
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label for="majorId" class="form-label fw-semibold">
+                        Ngành học <span class="text-danger">*</span>
+                    </label>
+                    <select id="majorId"
+                            th:field="*{majorId}"
+                            class="form-select"
+                            th:classappend="${#fields.hasErrors('majorId')} ? 'is-invalid'">
+                        <option value="">-- Chọn ngành học --</option>
+                        <option th:each="major : ${majors}"
+                                th:value="${major.majorId}"
+                                th:text="${major.majorName}">
+                        </option>
+                    </select>
+                    <div class="invalid-feedback"
+                         th:if="${#fields.hasErrors('majorId')}"
+                         th:errors="*{majorId}">
+                    </div>
+                </div>
+
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-primary">
+                        Lưu
+                    </button>
+                    <a th:href="@{/admin/classrooms}" class="btn btn-secondary">
+                        Quay lại
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+</body>
+</html>
