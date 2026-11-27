@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout(title='Quản lý tài khoản', content=~{:: #user-list})}">
+<head>
+    <title>Quản lý tài khoản</title>
+</head>
+<body>
+<main id="user-list" class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="mb-0">Quản lý tài khoản</h2>
+        <a th:href="@{/admin/users/new}" class="btn btn-primary">
+            <i class="bi bi-plus-lg"></i> Thêm tài khoản
+        </a>
+    </div>
+
+    <div class="mb-3 d-flex flex-wrap gap-2">
+        <a th:href="@{/admin/users}"
+           class="btn btn-sm"
+           th:classappend="${selectedRole == null} ? 'btn-dark' : 'btn-outline-dark'">
+            Tất cả
+        </a>
+        <a th:each="r : ${roles}"
+           th:href="@{/admin/users(role=${r})}"
+           th:text="${r.name() == 'ADMIN' ? 'Quản trị viên' : (r.name() == 'LECTURER' ? 'Giảng viên' : 'Sinh viên')}"
+           class="btn btn-sm"
+           th:classappend="${selectedRole == r} ? 'btn-dark' : 'btn-outline-dark'">
+            Vai trò
+        </a>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                <tr>
+                    <th style="width: 60px;">STT</th>
+                    <th>Tên đăng nhập</th>
+                    <th>Họ và tên</th>
+                    <th>Email</th>
+                    <th class="text-center">Vai trò</th>
+                    <th>Lớp học</th>
+                    <th class="text-center">Trạng thái</th>
+                    <th class="text-end" style="width: 210px;">Thao tác</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:if="${#lists.isEmpty(users)}">
+                    <td colspan="8" class="text-center text-muted py-4">
+                        Chưa có tài khoản nào phù hợp trong hệ thống.
+                    </td>
+                </tr>
+
+                <tr th:each="user, iterStat : ${users}">
+                    <td th:text="${startIndex + iterStat.count}">1</td>
+                    <td class="fw-semibold" th:text="${user.username}">admin</td>
+                    <td th:text="${user.fullName}">Trần Đình Hữu Thọ</td>
+                    <td th:text="${user.email}">admin@gmail.com</td>
+                    <td class="text-center">
+                        <span th:if="${user.role.name() == 'ADMIN'}" class="badge bg-danger">Quản trị viên</span>
+                        <span th:if="${user.role.name() == 'LECTURER'}" class="badge bg-primary">Giảng viên</span>
+                        <span th:if="${user.role.name() == 'STUDENT'}" class="badge bg-info text-dark">Sinh viên</span>
+                    </td>
+                    <td th:text="${user.classroomName != null ? user.classroomName : '—'}">—</td>
+                    <td class="text-center">
+                        <span th:if="${user.active}" class="badge bg-success">Hoạt động</span>
+                        <span th:unless="${user.active}" class="badge bg-secondary">Đã khóa</span>
+                    </td>
+                    <td class="text-end">
+                        <a th:href="@{/admin/users/{id}/edit(id=${user.userId})}"
+                           class="btn btn-sm btn-outline-warning me-1">
+                            Sửa
+                        </a>
+
+                        <form th:action="@{/admin/users/{id}/toggle-status(id=${user.userId})}"
+                              method="post"
+                              class="d-inline"
+                              th:onsubmit="${user.active} ? 'return confirm(\'Bạn có chắc chắn muốn vô hiệu hóa tài khoản này không?\');' : 'return confirm(\'Bạn có chắc chắn muốn kích hoạt lại tài khoản này không?\');'">
+                            <button type="submit"
+                                    class="btn btn-sm"
+                                    th:classappend="${user.active} ? 'btn-outline-danger' : 'btn-outline-success'"
+                                    th:text="${user.active} ? 'Vô hiệu hóa' : 'Kích hoạt'">
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card-footer d-flex justify-content-between align-items-center" th:if="${userPage.totalPages > 1}">
+            <small class="text-muted">
+                Trang <span th:text="${userPage.number + 1}">1</span> / <span th:text="${userPage.totalPages}">1</span>
+                (Tổng <span th:text="${userPage.totalElements}">0</span> tài khoản)
+            </small>
+            <nav aria-label="User pagination">
+                <ul class="pagination pagination-sm mb-0">
+                    <li class="page-item" th:classappend="${userPage.first} ? 'disabled'">
+                        <a class="page-link" th:href="@{/admin/users(page=${userPage.number - 1}, role=${selectedRole})}">Trước</a>
+                    </li>
+                    <li class="page-item"
+                        th:each="i : ${#numbers.sequence(0, userPage.totalPages - 1)}"
+                        th:classappend="${i == userPage.number} ? 'active'">
+                        <a class="page-link"
+                           th:href="@{/admin/users(page=${i}, role=${selectedRole})}"
+                           th:text="${i + 1}">1</a>
+                    </li>
+                    <li class="page-item" th:classappend="${userPage.last} ? 'disabled'">
+                        <a class="page-link" th:href="@{/admin/users(page=${userPage.number + 1}, role=${selectedRole})}">Sau</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</main>
+</body>
+</html>

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout(title=${pageTitle}, content=~{:: #user-form})}">
+<head>
+    <title th:text="${pageTitle}">Tài khoản</title>
+</head>
+<body>
+<main id="user-form" class="container py-4" style="max-width: 720px;">
+    <div class="mb-3">
+        <h2 th:text="${pageTitle}">Thêm người dùng</h2>
+    </div>
+
+    <div th:if="${errorMessage}" class="alert alert-danger" role="alert" th:text="${errorMessage}">
+        Lỗi nghiệp vụ
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <form th:action="@{${actionForm}}" th:object="${userRequest}" method="post" novalidate>
+                <div class="mb-3" th:if="${!isEdit}">
+                    <label for="username" class="form-label fw-semibold">
+                        Tên đăng nhập <span class="text-danger">*</span>
+                    </label>
+                    <input type="text"
+                           id="username"
+                           th:field="*{username}"
+                           class="form-control"
+                           th:classappend="${#fields.hasErrors('username')} ? 'is-invalid'"
+                           placeholder="Nhập tên đăng nhập (ví dụ: sv21001)">
+                    <div class="invalid-feedback"
+                         th:if="${#fields.hasErrors('username')}"
+                         th:errors="*{username}">
+                        Lỗi tên đăng nhập
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="fullName" class="form-label fw-semibold">
+                        Họ và tên <span class="text-danger">*</span>
+                    </label>
+                    <input type="text"
+                           id="fullName"
+                           th:field="*{fullName}"
+                           class="form-control"
+                           th:classappend="${#fields.hasErrors('fullName')} ? 'is-invalid'"
+                           placeholder="Nhập họ và tên đầy đủ">
+                    <div class="invalid-feedback"
+                         th:if="${#fields.hasErrors('fullName')}"
+                         th:errors="*{fullName}">
+                        Lỗi họ tên
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="email" class="form-label fw-semibold">
+                        Email <span class="text-danger">*</span>
+                    </label>
+                    <input type="email"
+                           id="email"
+                           th:field="*{email}"
+                           class="form-control"
+                           th:classappend="${#fields.hasErrors('email')} ? 'is-invalid'"
+                           placeholder="Nhập địa chỉ email">
+                    <div class="invalid-feedback"
+                         th:if="${#fields.hasErrors('email')}"
+                         th:errors="*{email}">
+                        Lỗi email
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="password" class="form-label fw-semibold">
+                        <span th:text="${isEdit ? 'Mật khẩu mới' : 'Mật khẩu'}">Mật khẩu</span>
+                        <span class="text-danger" th:if="${!isEdit}">*</span>
+                    </label>
+                    <input type="password"
+                           id="password"
+                           th:field="*{password}"
+                           class="form-control"
+                           th:classappend="${#fields.hasErrors('password')} ? 'is-invalid'"
+                           th:placeholder="${isEdit ? 'Để trống nếu giữ nguyên mật khẩu cũ (tối thiểu 8 ký tự)' : 'Nhập mật khẩu (tối thiểu 8 ký tự)'}">
+                    <div class="invalid-feedback"
+                         th:if="${#fields.hasErrors('password')}"
+                         th:errors="*{password}">
+                        Lỗi mật khẩu
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="role" class="form-label fw-semibold">
+                        Vai trò <span class="text-danger">*</span>
+                    </label>
+                    <select id="role"
+                            th:field="*{role}"
+                            class="form-select"
+                            th:classappend="${#fields.hasErrors('role')} ? 'is-invalid'">
+                        <option value="">-- Chọn vai trò --</option>
+                        <option th:each="r : ${roles}"
+                                th:value="${r}"
+                                th:text="${r.name() == 'ADMIN' ? 'Quản trị viên (ADMIN)' : (r.name() == 'LECTURER' ? 'Giảng viên (TEACHER)' : 'Sinh viên (STUDENT)')}">
+                        </option>
+                    </select>
+                    <div class="invalid-feedback"
+                         th:if="${#fields.hasErrors('role')}"
+                         th:errors="*{role}">
+                        Lỗi vai trò
+                    </div>
+                </div>
+
+                <div class="mb-3" id="classroom-wrapper">
+                    <label for="classroomId" class="form-label fw-semibold">
+                        Lớp học <span class="text-danger">*</span>
+                    </label>
+                    <select id="classroomId"
+                            th:field="*{classroomId}"
+                            class="form-select"
+                            th:classappend="${#fields.hasErrors('classroomId')} ? 'is-invalid'">
+                        <option value="">-- Chọn lớp học --</option>
+                        <option th:each="c : ${classrooms}"
+                                th:value="${c.classId}"
+                                th:text="${c.className}">
+                        </option>
+                    </select>
+                    <div class="invalid-feedback"
+                         th:if="${#fields.hasErrors('classroomId')}"
+                         th:errors="*{classroomId}">
+                        Lỗi lớp học
+                    </div>
+                </div>
+
+                <div class="mb-3 form-check form-switch" th:if="${isEdit}">
+                    <input class="form-check-input" type="checkbox" id="active" th:field="*{active}">
+                    <label class="form-check-label fw-semibold" for="active">
+                        Tài khoản đang hoạt động (Bỏ tích để khóa tài khoản)
+                    </label>
+                </div>
+
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-primary">
+                        Lưu
+                    </button>
+                    <a th:href="@{/admin/users}" class="btn btn-secondary">
+                        Quay lại
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const roleSelect = document.getElementById("role");
+            const classroomWrapper = document.getElementById("classroom-wrapper");
+            const classroomSelect = document.getElementById("classroomId");
+
+            function toggleClassroomField() {
+                if (roleSelect.value === "STUDENT") {
+                    classroomWrapper.style.display = "block";
+                } else {
+                    classroomWrapper.style.display = "none";
+                    classroomSelect.value = "";
+                }
+            }
+
+            toggleClassroomField();
+            roleSelect.addEventListener("change", toggleClassroomField);
+        });
+    </script>
+</main>
+</body>
+</html>
