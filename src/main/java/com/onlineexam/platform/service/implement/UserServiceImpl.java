@@ -12,6 +12,8 @@ import com.onlineexam.platform.repository.ClassroomRepository;
 import com.onlineexam.platform.repository.UserRepository;
 import com.onlineexam.platform.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,20 +26,23 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final ClassroomRepository classroomRepository;
     private final PasswordEncoder passwordEncoder;
+
     @Override
     @Transactional(readOnly = true)
-    public List<UserResponse> getAllUsers(UserRole role) {
-        List<User> users = (role != null) ? userRepository.findByRole(role) : userRepository.findAll();
-        return users.stream()
-                .map(user -> new UserResponse(
-                        user.getUserId(),
-                        user.getUsername(),
-                        user.getFullName(),
-                        user.getEmail(),
-                        user.getRole(),
-                        user.getClassroom() != null ? user.getClassroom().getClassName() : null,
-                        user.isActive()
-                )).toList();
+    public Page<UserResponse> getAllUsers(UserRole role, Pageable pageable) {
+        Page<User> users = (role != null)
+                ? userRepository.findByRole(role, pageable)
+                : userRepository.findAll(pageable);
+
+        return users.map(user -> new UserResponse(
+                user.getUserId(),
+                user.getUsername(),
+                user.getFullName(),
+                user.getEmail(),
+                user.getRole(),
+                user.getClassroom() != null ? user.getClassroom().getClassName() : null,
+                user.isActive()
+        ));
     }
 
     @Override
@@ -112,23 +117,20 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void deleteUser(Long userId, String currentUsername) {
+    public void toggleUserStatus(Long userId, String currentUsername) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
 
-        if (!user.isActive()) {
-            throw new BusinessRuleException("User already inactive", "Tài khoản này đã bị vô hiệu hóa trước đó");
+        if (user.isActive()) {
+            if (user.getUsername().equalsIgnoreCase(currentUsername)) {
+                throw new BusinessRuleException("Cannot deactivate self", "Không thể tự vô hiệu hóa tài khoản của chính mình");
+            }
+            if (user.getRole() == UserRole.ADMIN && userRepository.countByRoleAndIsActiveIsTrue(UserRole.ADMIN) <= 1) {
+                throw new BusinessRuleException("Cannot deactivate last active admin", "Không thể vô hiệu hóa tài khoản Admin hoạt động cuối cùng");
+            }
         }
 
-        if (user.getUsername().equalsIgnoreCase(currentUsername)) {
-            throw new BusinessRuleException("Cannot deactivate self", "Không thể tự vô hiệu hóa tài khoản của chính mình");
-        }
-
-        if (user.getRole() == UserRole.ADMIN && userRepository.countByRoleAndIsActiveIsTrue(UserRole.ADMIN) <= 1) {
-            throw new BusinessRuleException("Cannot deactivate last active admin", "Không thể vô hiệu hóa tài khoản Admin hoạt động cuối cùng");
-        }
-
-        user.setActive(false);
+        user.setActive(!user.isActive());
         userRepository.save(user);
     }
 
