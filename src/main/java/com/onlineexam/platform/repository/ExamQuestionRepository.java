@@ -4,4 +4,5 @@ import com.onlineexam.platform.entity.ExamQuestion;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ExamQuestionRepository extends JpaRepository<ExamQuestion, Long> {
+    boolean existsByQuestion_QuestionId(Long questionId);
 }
